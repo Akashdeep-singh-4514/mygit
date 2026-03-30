@@ -1,5 +1,8 @@
 use clap::{Parser, Subcommand};
 
+mod init;
+use init::create_files::init_repo;
+
 #[derive(Parser)]
 #[command(name = "mygit")]
 struct Cli {
@@ -19,7 +22,7 @@ fn main() {
 
     match cli.command {
         Commands::Init => {
-            println!("Initializing repo...");
+            let _ =init_repo();
         }
         Commands::Add { file } => {
             println!("Adding {}", file);
