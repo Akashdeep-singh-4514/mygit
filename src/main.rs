@@ -1,6 +1,10 @@
 use clap::{Parser, Subcommand};
 
+mod add;
+mod index;
 mod init;
+mod shas;
+use add::add_file::add;
 use init::create_files::init_repo;
 
 #[derive(Parser)]
@@ -25,7 +29,9 @@ fn main() {
             let _ = init_repo();
         }
         Commands::Add { file } => {
-            println!("Adding {}", file);
+            if let Err(e) = add(&file) {
+                eprintln!("Error: {}", e);
+            }
         }
         Commands::Commit { message } => {
             println!("Commit: {}", message);
