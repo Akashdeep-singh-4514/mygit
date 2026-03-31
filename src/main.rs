@@ -22,7 +22,7 @@ fn main() {
 
     match cli.command {
         Commands::Init => {
-            let _ =init_repo();
+            let _ = init_repo();
         }
         Commands::Add { file } => {
             println!("Adding {}", file);
@@ -32,4 +32,3 @@ fn main() {
         }
     }
 }
-
