@@ -7,19 +7,16 @@ pub fn hash_object(path: &str) -> io::Result<String> {
     let mut content = Vec::new();
     file.read_to_end(&mut content)?;
 
-    // 👇 Git-style header
     let header = format!("blob {}\0", content.len());
 
     let mut store = Vec::new();
     store.extend(header.as_bytes());
     store.extend(&content);
 
-    // 👇 hash the FULL store (header + content)
     let mut hasher = Sha1::new();
     hasher.update(&store);
     let hash = hex::encode(hasher.finalize());
 
-    // 👇 Git-style object storage
     let (dir, file) = hash.split_at(2);
     let object_dir = format!(".mygit/objects/{}", dir);
     let object_path = format!("{}/{}", object_dir, file);
@@ -27,7 +24,7 @@ pub fn hash_object(path: &str) -> io::Result<String> {
     fs::create_dir_all(&object_dir)?;
 
     if !std::path::Path::new(&object_path).exists() {
-        fs::write(&object_path, store)?; // ⚠️ store, not content
+        fs::write(&object_path, store)?;
     }
 
     Ok(hash)
