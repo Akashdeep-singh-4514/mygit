@@ -1,6 +1,5 @@
 use clap::{Parser, Subcommand};
-
-use mygit::commands::{add, commit, init};
+use mygit::commands::{add, commit, init, log};
 
 #[derive(Parser)]
 #[command(name = "mygit")]
@@ -14,6 +13,7 @@ enum Commands {
     Init,
     Add { file: String },
     Commit { message: String },
+    Log,
 }
 
 fn main() {
@@ -29,7 +29,10 @@ fn main() {
             }
         }
         Commands::Commit { message } => {
-            commit::commit(&message);
+            let _ = commit::commit(&message);
+        }
+        Commands::Log => {
+            let _ = log::log();
         }
     }
 }
