@@ -1,11 +1,6 @@
 use clap::{Parser, Subcommand};
 
-mod add;
-mod index;
-mod init;
-mod shas;
-use add::add_file::add;
-use init::create_files::init_repo;
+use mygit::commands::{add, commit, init};
 
 #[derive(Parser)]
 #[command(name = "mygit")]
@@ -26,15 +21,15 @@ fn main() {
 
     match cli.command {
         Commands::Init => {
-            let _ = init_repo();
+            let _ = init::init_repo();
         }
         Commands::Add { file } => {
-            if let Err(e) = add(&file) {
+            if let Err(e) = add::add(&file) {
                 eprintln!("Error: {}", e);
             }
         }
         Commands::Commit { message } => {
-            println!("Commit: {}", message);
+            commit::commit(&message);
         }
     }
 }

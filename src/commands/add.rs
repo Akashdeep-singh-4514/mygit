@@ -1,5 +1,5 @@
-use crate::index::manage::update_index;
-use crate::shas::file_content::hash_object;
+use crate::index;
+use crate::object::blob;
 use std::io;
 
 pub fn add(file: &str) -> io::Result<()> {
@@ -8,8 +8,8 @@ pub fn add(file: &str) -> io::Result<()> {
         return Ok(());
     }
 
-    let hash = hash_object(file)?;
-    update_index(file, &hash)?;
+    let hash = blob::hash_object(file)?;
+    index::update_index(file, &hash)?;
 
     println!("Added {} ({})", file, hash);
     Ok(())
