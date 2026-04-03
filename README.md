@@ -15,30 +15,72 @@ This is **not** a full Git implementation. It is meant for experimentation and u
 
 HEAD in `.mygit/HEAD` is initialized for compatibility with a Git-like layout; the tool tracks the current tip via `.mygit/HEAD_COMMIT`.
 
-## Requirements
+## Installation
 
-- A recent **Rust** toolchain (`cargo`, `rustc`) with support for the **2024 edition** (as set in `Cargo.toml`).
+### 1. Prerequisites
 
-## Build
+Install a **Rust** toolchain if you do not already have one. The usual approach is [rustup](https://rustup.rs/):
 
-Release binary:
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+Open a new shell (or run `source "$HOME/.cargo/env"`) so `cargo` and `rustc` are on your `PATH`. This project targets the **2024 edition** (see `Cargo.toml`); use a current stable toolchain from rustup.
+
+### 2. Get the source
+
+Clone or copy this repository, then go to its root:
+
+```bash
+cd /path/to/mygit
+```
+
+### 3. Build a release binary
 
 ```bash
 cargo build --release
 ```
 
-The executable is at `target/release/mygit`.
+The binary is `target/release/mygit`. You can run it directly:
 
-### Optional: install on your PATH
+```bash
+./target/release/mygit --help
+```
+
+### 4. Put `mygit` on your PATH (pick one)
+
+**User install via Cargo** (recommended: installs to `~/.cargo/bin`, which rustup usually adds to `PATH`):
+
+```bash
+cargo install --path .
+```
+
+After that, `mygit` should work from any directory if `~/.cargo/bin` is on your `PATH`.
+
+**Copy to your user bin** (no `sudo`; create `~/.local/bin` if it does not exist):
+
+```bash
+mkdir -p "$HOME/.local/bin"
+cp target/release/mygit "$HOME/.local/bin/"
+```
+
+Ensure `"$HOME/.local/bin"` is listed in your `PATH` in your shell profile.
+
+**System-wide** (Linux/macOS; requires appropriate permissions):
 
 ```bash
 sudo cp target/release/mygit /usr/local/bin/
 ```
 
-Or run without installing:
+### Run without installing
+
+From the project root, use Cargo to build and invoke the binary in one step:
 
 ```bash
-cargo run --release -- <subcommand> ...
+cargo run --release -- init
+cargo run --release -- add somefile.txt
+cargo run --release -- commit "message"
+cargo run --release -- log
 ```
 
 ## Usage
